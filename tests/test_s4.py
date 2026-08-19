@@ -153,12 +153,34 @@ def test_s4_gradient_flow(small_s4):
     assert small_s4.C.grad.shape == small_s4.C.shape
 
 
-def test_s4_bidirectional():
+def test_s4_bidirectional_shape():
     torch.manual_seed(0)
     layer = S4Layer(d_model=4, d_state=8, bidirectional=True)
     u = torch.randn(2, 16, 4)
     y = layer(u)
     assert y.shape == (2, 16, 4)
+
+
+def test_s4_bidirectional_is_not_noop():
+    """bidirectional must actually scan both directions and sum.
+
+    A bidirectional layer's output on a sequence must differ from the
+    unidirectional layer's output. If this fails, the flag is a silent
+    no-op (which was a real bug caught during codebase review).
+    """
+    torch.manual_seed(0)
+    u = torch.randn(1, 32, 2)
+    layer_uni = S4Layer(d_model=2, d_state=8, bidirectional=False)
+    # Copy weights so the only difference is the bidirectional flag
+    layer_bi = S4Layer(d_model=2, d_state=8, bidirectional=True)
+    layer_bi.C.data = layer_uni.C.data.clone()
+    layer_bi.D.data = layer_uni.D.data.clone()
+    layer_bi.log_step.data = layer_uni.log_step.data.clone()
+    y_uni = layer_uni(u)
+    y_bi = layer_bi(u)
+    assert not torch.allclose(y_uni, y_bi, atol=1e-6), (
+        "bidirectional=True produced identical output to bidirectional=False"
+    )
 
 
 def test_s4_long_sequence_no_nan():

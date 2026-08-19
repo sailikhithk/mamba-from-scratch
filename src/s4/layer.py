@@ -14,8 +14,8 @@ Both views produce identical outputs (up to numerical precision), which is
 the theoretical guarantee we verify in the test suite.
 
 This is the naive (non-Krylov, non-structured) implementation for pedagogical
-clarity. The optimized version using truncated generating kernels lives in
-s4_conv.py.
+clarity. An optimized version using truncated generating kernels is planned
+(see CHANGELOG.md).
 """
 from __future__ import annotations
 
@@ -180,10 +180,24 @@ class S4Layer(nn.Module):
         return self.dropout(y)
 
     def forward(self, u: Tensor, mode: str = "conv") -> Tensor:
-        """Forward pass. mode: "conv" (default, fast) or "recurrent"."""
+        """Forward pass. mode: "conv" (default, fast) or "recurrent".
+
+        If ``bidirectional`` was set, the SSM is run forward and backward
+        (on the reversed sequence) and the two outputs are summed, like a
+        bi-LSTM.
+        """
         if mode == "conv":
-            return self.forward_conv(u)
+            y = self.forward_conv(u)
         elif mode == "recurrent":
-            return self.forward_recurrent(u)
+            y = self.forward_recurrent(u)
         else:
             raise ValueError(f"Unknown mode: {mode}")
+
+        if self.bidirectional:
+            u_rev = torch.flip(u, dims=[1])
+            if mode == "conv":
+                y_rev = self.forward_conv(u_rev)
+            else:
+                y_rev = self.forward_recurrent(u_rev)
+            y = y + torch.flip(y_rev, dims=[1])
+        return y

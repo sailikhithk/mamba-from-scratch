@@ -1,7 +1,7 @@
 [project]
 name = "mamba-from-scratch"
 version = "0.1.0"
-description = "Educational from-scratch implementation of S4, Mamba-1 (S6), and Mamba-2 (SSD)"
+description = "Clear, well-tested, from-scratch implementation of S4, Mamba-1 (S6), and Mamba-2 (SSD) state-space models in pure PyTorch"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [

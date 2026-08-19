@@ -13,6 +13,21 @@ import pytest
 import torch
 
 from s4 import S4Layer, bilinear_discretize, hippo_legs, zoh_discretize
+from s4 import __version__
+
+
+# ---------------------------------------------------------------------------
+# Version
+# ---------------------------------------------------------------------------
+
+
+def test_version_string_is_semver():
+    """__version__ must be a valid SemVer string (MAJOR.MINOR.PATCH)."""
+    parts = __version__.split(".")
+    assert len(parts) == 3, f"Expected 3 parts, got {len(parts)}: {__version__}"
+    for p in parts:
+        assert p.isdigit(), f"Non-numeric version segment: {p!r}"
+        assert int(p) >= 0
 
 
 # ---------------------------------------------------------------------------

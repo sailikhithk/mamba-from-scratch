@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Mamba-2 (SSD): parallel structured scan via chunked attention
 - Jupyter notebooks with visual walkthroughs of each component
 - Benchmark suite vs `mamba-ssm` on Long-Range Arena
+- GitHub Pages site with full SEO (deferred to v0.2.0)
+
+### Added (unreleased)
+- `llms.txt` at repo root: AI-crawler-readable project summary following
+  the llmstxt.org convention.
+- 12 GitHub topics set on the repo for search and topic-page
+  discoverability.
 
 ## [0.1.0] - 2026-08-19
 

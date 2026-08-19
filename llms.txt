@@ -1,0 +1,42 @@
+# mamba-from-scratch
+
+> Clear, well-tested, from-scratch implementation of S4, Mamba-1 (S6), and Mamba-2 (SSD) state-space models in pure PyTorch. Optimized for clarity over speed: every component is derived from first principles, both computational views (recurrent and convolutional) are implemented side by side, and the central theoretical guarantees are verified by tests.
+
+mamba-from-scratch is an educational library that bridges the gap between the math of structured state-space models and production code. Most existing implementations optimize for speed and skip the derivation. This project optimizes for honesty: the HiPPO matrix is built from its closed-form entries, discretization preserves gradient flow through the learnable step size, and the recurrent and convolutional views of each layer are verified to produce identical outputs to 1e-6 in float64.
+
+## Current state (v0.1.0)
+
+The S4 layer is complete and tested. Mamba-1 (S6 selective scan) and Mamba-2 (SSD parallel scan) are planned.
+
+## Implemented
+
+- [S4 layer](src/s4/layer.py): HiPPO-LegS initialization, ZOH and bilinear discretization, recurrent (O(L)) and convolutional (O(L log L)) views that produce identical outputs.
+- [HiPPO matrix and discretization](src/s4/hippo.py): `hippo_legs(N)`, `zoh_discretize`, `bilinear_discretize` with gradient flow through the step size.
+- [Test suite](tests/test_s4.py): 14 tests verifying matrix structure and stability, discretized eigenvalues inside the unit disk, recurrent/convolutional equivalence, gradient flow, and long-sequence stability.
+
+## Documentation
+
+- [README](README.md): motivation, design principles, install and test instructions.
+- [CHANGELOG](CHANGELOG.md): Keep a Changelog format, SemVer releases.
+- [CONTRIBUTING](CONTRIBUTING.md): SemVer policy, release checklist, commit conventions, minimum test bar for new SSM layers.
+- [Research notes](docs/RESEARCH.md): landscape survey of existing S4/Mamba implementations.
+
+## Key design principles
+
+- Two views, one truth: every SSM layer ships with both the recurrent and the convolutional implementation, and a test that they agree.
+- Honest numerics: no silently deactivating gradients, no `.item()` that detaches the graph, no flipped-kernel tricks without explanation.
+- Minimal dependencies: pure PyTorch plus NumPy. No `mamba-ssm`, no `causal-conv1d`, no Triton in the core library.
+- Tested before optimized: the naive O(L^2) convolution path is kept alongside the FFT path so correctness can be checked independently of speed.
+
+## References
+
+- Gu, Goel, Re. "Efficiently Modeling Long Sequences with Structured State Spaces." ICLR 2022. https://arxiv.org/abs/2111.00396
+- Gu, Dao. "Mamba: Linear-Time Sequence Modeling with Selective State Spaces." 2023. https://arxiv.org/abs/2312.00752
+- Dao, Gu. "Transformers are SSMs: Generalized Models and Parallel Algorithms." 2024. https://arxiv.org/abs/2405.21060
+- Gu, Dao, Ermon, Rudra, Re. "HiPPO: Recurrent Memory with Optimal Polynomial Projections." NeurIPS 2020. https://arxiv.org/abs/2008.07669
+
+## Repository
+
+- Source: https://github.com/sailikhithk/mamba-from-scratch
+- License: MIT
+- Author: Sai Likhith Kanuparthi

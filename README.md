@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.svg" alt="Mamba from Scratch - S4, Mamba-1 (S6), Mamba-2 (SSD) in pure PyTorch" width="100%">
+</p>
+
 # mamba-from-scratch
 
 A clear, well-tested, from-scratch implementation of structured state-space models (S4, Mamba-1/S6, Mamba-2/SSD) in pure PyTorch.
@@ -116,3 +120,28 @@ mamba-from-scratch/
 ## License
 
 MIT
+
+---
+
+## About the author
+
+**Sai Likhith Kanuparthi** is a Senior AI Infrastructure & Systems Engineer
+at Airbnb. MS Computer Science from NYU. Published research on state-space
+models and parameter-efficient adapters (Cambridge Scholars chapter).
+
+- **GitHub:** [github.com/sailikhithk](https://github.com/sailikhithk)
+- **LinkedIn:** [linkedin.com/in/sailikhithk](https://www.linkedin.com/in/sailikhithk)
+- **Portfolio:** [sailikhith.me](https://sailikhith.me)
+- **Other open-source projects:**
+  - [Synthetic-AI-Image-Detector](https://github.com/sailikhithk/Synthetic-AI-Image-Detector) - Multi-signal deepfake detection with calibration
+  - [llm-production-engineering](https://github.com/sailikhithk/llm-production-engineering) - Field notes on LLM serving in production
+
+---
+
+## Keywords
+
+`Sai Likhith Kanuparthi` `Mamba from Scratch` `S4` `Mamba-1` `Mamba-2` `SSD`
+`state space models` `SSM` `HiPPO` `selective scan` `structured state space`
+`PyTorch` `sequence modeling` `efficient inference` `Mamba` `Jamba`
+`recurrent neural networks` `convolutional view` `parallel scan`
+

@@ -29,6 +29,10 @@ State-space models (SSMs) are the family behind Mamba, Jamba, and a growing shar
 
 ## Architecture
 
+<p align="center">
+  <img src="assets/architecture.svg" alt="Mamba state-space model architecture: S4 HiPPO initialization, selective scan, recurrent and convolutional views" width="100%">
+</p>
+
 The S4 layer's central insight is that the same state-space model supports two
 equivalent computational views. This duality is what makes SSMs both parallel-trainable
 and autoregressive-efficient:
@@ -89,6 +93,14 @@ flowchart TD
     style NB fill:#1a1a2e,stroke:#e94560,color:#aaa
     style BM fill:#1a1a2e,stroke:#e94560,color:#aaa
 ```
+
+### Model comparison
+
+Where do SSMs sit in the sequence-model landscape? S4 gives linear complexity and long memory; Mamba adds input-dependent gating; Transformers remain the quality baseline but scale quadratically.
+
+<p align="center">
+  <img src="assets/model-comparison.svg" alt="Sequence models compared: RNN, Transformer, S4, and Mamba state-space models" width="100%">
+</p>
 
 ## The S4 layer
 

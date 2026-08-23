@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="100%" height="auto" role="img" aria-label="Mamba state-space model architecture: S4 HiPPO initialization, selective scan, recurrent and convolutional views">
+  <style>
+    .label { font-family: -apple-system, Segoe UI, Helvetica, sans-serif; font-size: 13px; fill: #1a1a1a; }
+    .title { font-family: -apple-system, Segoe UI, Helvetica, sans-serif; font-size: 16px; font-weight: 600; fill: #0f172a; }
+    .small { font-family: -apple-system, Segoe UI, Helvetica, sans-serif; font-size: 11px; fill: #475569; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; fill: #1e293b; }
+    @media (prefers-color-scheme: dark) {
+      .label { fill: #e2e8f0; }
+      .title { fill: #f1f5f9; }
+      .small { fill: #94a3b8; }
+      .mono { fill: #cbd5e1; }
+    }
+  </style>
+
+  <text x="400" y="28" text-anchor="middle" class="title">Mamba: Structured State-Space Models</text>
+  <text x="400" y="48" text-anchor="middle" class="small">S4 - Mamba-1 (S6) - Mamba-2 (SSD) in pure PyTorch</text>
+
+  <!-- Input sequence -->
+  <rect x="20" y="190" width="80" height="60" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="60" y="215" text-anchor="middle" class="label">Input</text>
+  <text x="60" y="232" text-anchor="middle" class="small">x[t]</text>
+
+  <!-- Animated input tokens flowing in -->
+  <g>
+    <rect x="30" y="100" width="20" height="20" rx="3" fill="#3b82f6" opacity="0.7">
+      <animate attributeName="y" from="100" to="190" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.7;0.7;0" dur="2s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="55" y="80" width="20" height="20" rx="3" fill="#3b82f6" opacity="0.7">
+      <animate attributeName="y" from="80" to="190" dur="2s" begin="0.3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.7;0.7;0" dur="2s" begin="0.3s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="80" y="110" width="20" height="20" rx="3" fill="#3b82f6" opacity="0.7">
+      <animate attributeName="y" from="110" to="190" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.7;0.7;0" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+
+  <!-- Selective Scan block (the Mamba innovation) -->
+  <rect x="160" y="150" width="140" height="140" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/>
+  <text x="230" y="175" text-anchor="middle" class="label" font-weight="600">Selective Scan</text>
+  <text x="230" y="193" text-anchor="middle" class="small">(Mamba innovation)</text>
+  <line x1="175" y1="205" x2="285" y2="205" stroke="#f59e0b" stroke-width="0.5" stroke-dasharray="3,3"/>
+  <text x="230" y="222" text-anchor="middle" class="mono">B(t), C(t), Delta(t)</text>
+  <text x="230" y="240" text-anchor="middle" class="small">input-dependent</text>
+  <text x="230" y="258" text-anchor="middle" class="small">selection gate</text>
+  <text x="230" y="276" text-anchor="middle" class="small">(vs fixed in S4)</text>
+
+  <!-- Pulsing selection gate -->
+  <rect x="195" y="155" width="70" height="6" rx="3" fill="#f59e0b">
+    <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- State h[t] -->
+  <rect x="350" y="150" width="100" height="140" rx="10" fill="#e0e7ff" stroke="#6366f1" stroke-width="2.5"/>
+  <text x="400" y="180" text-anchor="middle" class="label" font-weight="600">State h[t]</text>
+  <text x="400" y="200" text-anchor="middle" class="small">N-dim</text>
+  <text x="400" y="220" text-anchor="middle" class="mono">h' = A h + B x</text>
+  <text x="400" y="240" text-anchor="middle" class="mono">y = C h</text>
+  <text x="400" y="265" text-anchor="middle" class="small">HiPPO-LegS init</text>
+
+  <!-- Animated state update pulse -->
+  <circle cx="400" cy="220" r="4" fill="#6366f1">
+    <animate attributeName="r" values="3;8;3" dur="1s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;0.3;1" dur="1s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Two views: recurrent and convolutional -->
+  <rect x="510" y="100" width="130" height="70" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="575" y="125" text-anchor="middle" class="label" font-weight="600">Recurrent</text>
+  <text x="575" y="143" text-anchor="middle" class="small">O(N) per step</text>
+  <text x="575" y="160" text-anchor="middle" class="small">inference</text>
+
+  <rect x="510" y="270" width="130" height="70" rx="8" fill="#fce7f3" stroke="#ec4899" stroke-width="2"/>
+  <text x="575" y="295" text-anchor="middle" class="label" font-weight="600">Convolutional</text>
+  <text x="575" y="313" text-anchor="middle" class="small">O(N log N) FFT</text>
+  <text x="575" y="330" text-anchor="middle" class="small">training</text>
+
+  <!-- Output -->
+  <rect x="700" y="190" width="80" height="60" rx="6" fill="#fef9c3" stroke="#eab308" stroke-width="2"/>
+  <text x="740" y="215" text-anchor="middle" class="label">Output</text>
+  <text x="740" y="232" text-anchor="middle" class="small">y[t]</text>
+
+  <!-- Connection arrows with animation -->
+  <g fill="none" stroke-width="2">
+    <path d="M 100 220 L 160 220" stroke="#3b82f6" opacity="0.7">
+      <animate attributeName="stroke-dasharray" values="0,60;30,30;60,0" dur="1.5s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 300 220 L 350 220" stroke="#f59e0b" opacity="0.7">
+      <animate attributeName="stroke-dasharray" values="0,50;25,25;50,0" dur="1.5s" begin="0.3s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 450 200 L 510 135" stroke="#22c55e" opacity="0.7">
+      <animate attributeName="stroke-dasharray" values="0,90;45,45;90,0" dur="1.5s" begin="0.6s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 450 240 L 510 305" stroke="#ec4899" opacity="0.7">
+      <animate attributeName="stroke-dasharray" values="0,90;45,45;90,0" dur="1.5s" begin="0.9s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 640 135 L 700 210" stroke="#22c55e" opacity="0.5" stroke-dasharray="4,4"/>
+    <path d="M 640 305 L 700 230" stroke="#ec4899" opacity="0.5" stroke-dasharray="4,4"/>
+  </g>
+
+  <!-- Duality indicator -->
+  <text x="575" y="225" text-anchor="middle" class="small" font-style="italic">duality</text>
+  <line x1="575" y1="170" x2="575" y2="270" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2,4">
+    <animate attributeName="stroke-dashoffset" from="0" to="-12" dur="1s" repeatCount="indefinite"/>
+  </line>
+
+  <text x="400" y="395" text-anchor="middle" class="small">Both views must agree - verified by tests - the core SSM duality</text>
+</svg>

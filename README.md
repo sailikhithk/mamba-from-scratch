@@ -12,6 +12,10 @@ Most existing implementations optimize for speed and skip the math. This project
 
 State-space models (SSMs) are the family behind Mamba, Jamba, and a growing share of efficient sequence models. They are subtle: the same equation supports a slow recurrent form and a fast parallel form, and the two must agree. Understanding that duality, the HiPPO initialization that gives SSMs long-range memory, and the selective scan that makes Mamba input-dependent, requires reading code that is honest about both the math and the numerics. That is what this repo provides.
 
+<p align="center">
+  <img src="assets/architecture.svg" alt="Mamba state-space model architecture: S4 HiPPO initialization, selective scan, recurrent and convolutional views" width="100%">
+</p>
+
 ## Status
 
 | Component | Status | Description |

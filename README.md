@@ -23,6 +23,69 @@ State-space models (SSMs) are the family behind Mamba, Jamba, and a growing shar
 | Notebooks | Planned | Visual walkthrough of each component |
 | Benchmarks | Planned | vs `mamba-ssm` on Long-Range Arena |
 
+## Architecture
+
+The S4 layer's central insight is that the same state-space model supports two
+equivalent computational views. This duality is what makes SSMs both parallel-trainable
+and autoregressive-efficient:
+
+```mermaid
+flowchart LR
+    subgraph CT["Continuous-time SSM"]
+        A["A (HiPPO-LegS)"] --> X["x'(t) = Ax(t) + Bu(t)"]
+        B["B"] --> X
+        X --> Y["y(t) = Cx(t) + Du(t)"]
+        C["C (learnable)"] --> Y
+        D["D (learnable)"] --> Y
+    end
+
+    DT["Discretization\nZOH / Bilinear\n(learnable step)"] --> ABAR["Abar, Bbar"]
+
+    subgraph REC["Recurrent view - O(L)"]
+        R1["x_k"] --> R2["x_{k+1} = Abar x_k + Bbar u_k"]
+        R2 --> R3["y_k = C x_k + D u_k"]
+        R3 --> R4["x_{k+1}"]
+        R4 --> R2
+    end
+
+    subgraph CONV["Convolutional view - O(L log L)"]
+        C1["u_0 ... u_{L-1}"] --> C2["FFT"]
+        C2 --> C3["Multiply by\nKrylov kernel"]
+        C3 --> C4["iFFT"]
+        C4 --> C5["y_0 ... y_{L-1}"]
+    end
+
+    CT --> DT
+    DT --> REC
+    DT --> CONV
+    REC --> TEST["test_s4_conv_and_recurrent_match\n(to 1e-6 in float64)"]
+    CONV --> TEST
+
+    style CT fill:#1a1a2e,stroke:#e94560,color:#fff
+    style REC fill:#16213e,stroke:#0f3460,color:#fff
+    style CONV fill:#16213e,stroke:#0f3460,color:#fff
+    style TEST fill:#0f3460,stroke:#e94560,color:#fff
+```
+
+The implementation roadmap from S4 to Mamba-2, showing how each model builds on
+the previous:
+
+```mermaid
+flowchart TD
+    S4["S4 (Done)\nHiPPO-LegS init\nZOH/bilinear discretize\nRecurrent + Conv views"] --> S4O["S4 optimized (Planned)\nKrylov / FFT powers\nTruncated generating kernel"]
+    S4 --> M1["Mamba-1 / S6 (Planned)\nInput-dependent selective scan\nB, C, step are functions of u\nRemoves LTI constraint"]
+    M1 --> M2["Mamba-2 / SSD (Planned)\nParallel structured scan\nChunked attention view\nHardware-efficient"]
+    S4 --> NB["Notebooks (Planned)\nVisual walkthroughs"]
+    M2 --> BM["Benchmarks (Planned)\nvs mamba-ssm\nLong-Range Arena"]
+
+    style S4 fill:#0f3460,stroke:#e94560,color:#fff
+    style S4O fill:#1a1a2e,stroke:#e94560,color:#aaa
+    style M1 fill:#1a1a2e,stroke:#e94560,color:#aaa
+    style M2 fill:#1a1a2e,stroke:#e94560,color:#aaa
+    style NB fill:#1a1a2e,stroke:#e94560,color:#aaa
+    style BM fill:#1a1a2e,stroke:#e94560,color:#aaa
+```
+
 ## The S4 layer
 
 The S4 layer from [Gu, Goel, Re (2022)](https://arxiv.org/abs/2111.00396) implements the continuous-time state-space model

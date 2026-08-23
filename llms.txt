@@ -39,4 +39,23 @@ The S4 layer is complete and tested. Mamba-1 (S6 selective scan) and Mamba-2 (SS
 
 - Source: https://github.com/sailikhithk/mamba-from-scratch
 - License: MIT
-- Author: Sai Likhith Kanuparthi
+
+## Other AI/ML work by Sai Likhith Kanuparthi
+
+- [facadedriver](https://github.com/sailikhithk/facadedriver) - Model-agnostic orchestration for multi-LLM production systems: routing, retry, fallback, circuit breakers, per-request telemetry.
+- [Synthetic-AI-Image-Detector](https://github.com/sailikhithk/Synthetic-AI-Image-Detector) - Multi-signal deepfake detection with calibration, uncertainty quantification, and cross-generator eval.
+- [llm-production-engineering](https://github.com/sailikhithk/llm-production-engineering) - Field notes on LLM serving in production: cost tracking, eval-driven deployment, capacity planning, incident playbooks.
+- [alzheimers-drug-discovery-demo](https://github.com/sailikhithk/alzheimers-drug-discovery-demo) - QSAR machine learning for Alzheimer's drug discovery: predict bioactivity against Beta-amyloid A4 protein.
+- [Project-X](https://github.com/sailikhithk/Project-X) - AI-based video interview platform with automated analysis.
+- [Tags-recommender-system-for-community-forums](https://github.com/sailikhithk/Tags-recommender-system-for-community-forums) - NLP multi-label tag recommender with TF-IDF, neural networks, and active learning.
+- [CreditCardFraudDetectionUsingKafka](https://github.com/sailikhithk/CreditCardFraudDetectionUsingKafka) - Real-time fraud detection with Kafka, Spark EMR, and AWS Lambda.
+
+## Author
+
+Sai Likhith Kanuparthi - Senior AI Infrastructure & Systems Engineer.
+7+ years shipping production AI systems at Airbnb, Southwest Airlines, Shell,
+Eli Lilly, and Oracle. MS Computer Science from NYU.
+
+- GitHub: https://github.com/sailikhithk
+- LinkedIn: https://www.linkedin.com/in/sailikhithk
+- Portfolio: https://sailikhith.me
